@@ -2,15 +2,17 @@ package com.project.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="Students")
-
 public class Students {
 	@Id
 	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int Roll_No;
 	@Column
 	private int Prn;
