@@ -1,0 +1,177 @@
+{
+	"info": {
+		"_postman_id": "bd6a5460-e5fc-415f-98d2-de8b8eb9aad1",
+		"name": "Cdac Project",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Student",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"roll_No\": 1,\n    \"prn\": 12345,\n    \"firstName\":\"Ashwin\",\n    \"middleName\":\"Dattatray\",\n    \"lastName\":\"Kolkar\",\n    \"email\":\"abcd@gmail.com\",\n    \"mobile\":\"83450909\",\n    \"photo\":\"/asdf/aslkd\",\n    \"password\":\"thePassword\",\n    \"course\":\"Abcd\",\n    \"password_Status\":1,\n    \"address\":\"India\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/Student/addStudent",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Student",
+						"addStudent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addCourse",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"courseId\":1,\n  \"name\":\"DAC\"\n  \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/Admin/addCourse",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Admin",
+						"addCourse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addSubject",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"SubjectId\":1,\n    \"name\":\"Java\",\n    \"courseId\":1,\n    \"teacherId\":1\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/Admin/addSubject",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Admin",
+						"addSubject"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addTimeTable",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"day\": \"Monday\",\n    \"date\":\"2019-04-28T14:45:15\" ,\n    \"zoomId\": \"12904209\",\n    \"zoomPassword\":\"password\",\n    \"course\":1\n    \n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/Admin/addTimeTable",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Admin",
+						"addTimeTable"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addMakrs",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"roll_No\":1,\n    \"subject_Id\":9 ,\n    \"internal_Marks\":16 ,\n    \"lab_Marks\":36 ,\n    \"total\" : 52 ,\n    \"status\": \"P\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/Teacher/addMakrs",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Teacher",
+						"addMakrs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addAttendance",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"teacher_Id\":1 ,\n    \"student_Id\": 1,\n    \"course_Id\": 1,\n    \"subject\":\"Java\" ,\n    \"present_Absent\":\"P\" ,\n    \"date\": \"2019-04-28T14:45:15\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/Teacher/addAttendance",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"Teacher",
+						"addAttendance"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
