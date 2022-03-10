@@ -1,5 +1,7 @@
 package com.project.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,5 +35,19 @@ public class StudentController {
 		courseDao.addCourse(course);
 		return "Course Added";
 	}
+	
+	@PostMapping("/findStudents")
+	public List<Students> findAllStudents() {
+		List<Students> s = studentDao.findAllStudent();
+		return s;
+	}
+	
+	@PostMapping("/findStudent")
+	public Students findStudent(@RequestBody int id) {
+		Students s = (Students) studentDao.findStudent(id);
+		System.out.println(s.toString());
+		return s;
+	}
+	
 
 }

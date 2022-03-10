@@ -6,4 +6,5 @@ import com.project.entity.Students;
 
 public interface StudentsDao extends JpaRepository<Students, Integer > {
 
+
 }

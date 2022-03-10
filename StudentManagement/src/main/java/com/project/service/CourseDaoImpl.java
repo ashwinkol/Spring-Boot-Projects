@@ -14,6 +14,7 @@ public class CourseDaoImpl {
 	
 	public String addCourse(@RequestBody Course course) {
 		CourseDao.save(course);
+		
 		return "Course Added";
 	}
 }
