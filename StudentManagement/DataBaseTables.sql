@@ -1,3 +1,6 @@
+CREATE DATABASE StudentManagement
+USE StudentManagement
+
 drop table if exists Students;
 drop table if exists Teacher;
 drop table if exists Notice_Board;
