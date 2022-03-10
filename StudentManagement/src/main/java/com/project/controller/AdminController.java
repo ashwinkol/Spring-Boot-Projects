@@ -1,4 +1,4 @@
-package com.project;
+package com.project.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
