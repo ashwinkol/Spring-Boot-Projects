@@ -17,4 +17,27 @@ public class TeacherDaoImpl {
 		teacherDao.save(teacher);
 		
 	}
+	
+	public boolean isValidTeacher(String email,String password) {
+		String isValidUser = teacherDao.isValidTeacher(email,password);
+		if(isValidUser != null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+		
+	}
+	
+	
+	public boolean isValidEmail(String email) {
+		String val =  teacherDao.isValidEmail(email);
+		if(val != null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 }

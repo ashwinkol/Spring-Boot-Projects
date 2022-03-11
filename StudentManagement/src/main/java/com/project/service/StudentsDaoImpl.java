@@ -42,4 +42,16 @@ public class StudentsDaoImpl {
 		}
 	}
 	
+	public boolean isValidUser(String email,String Password) {
+		String isValidUser = StudentsDao.isValidUser(email, Password);
+		if(isValidUser != null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+		
+	}
+	
 }

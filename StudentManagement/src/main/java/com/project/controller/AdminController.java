@@ -1,5 +1,9 @@
 package com.project.controller;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,56 +29,84 @@ public class AdminController {
 
 	@Autowired
 	private StudentsDaoImpl studentDaoImpl;
-	
+
 	@Autowired
 	private TeacherDaoImpl teacherDaoImpl;
-	
+
 	@Autowired
 	private SubjectsDaoImpl subjectsDaoImpl;
-	
-	
+
 	@Autowired
 	private Notice_BoardDaoImpl noticeDaoImpl;
-	
+
 	@Autowired
 	private CourseDaoImpl courseDaoImpl;
-	
+
 	@Autowired
 	private Time_TableDaoImpl timeTableDaoImpl;
-	
+
 	@PostMapping("/addCourse")
 	public String addCourse(@RequestBody Course course) {
 		courseDaoImpl.addCourse(course);
 		return "Course Added Sucsessfully!!!!!!!";
-	
+
 	}
-	
-	
-	
+
 	@PostMapping("/addStudent")
 	public String addStudent(@RequestBody Students student) {
+		String inputPassword = null;
+				
+		try {
+			inputPassword = student.getPassword();
+
+			// Static getInstance method is called with hashing MD5
+			MessageDigest md = MessageDigest.getInstance("MD5");
+
+			// digest() method is called to calculate message digest
+			// of an input digest() return array of byte
+			byte[] messageDigest = md.digest(inputPassword.getBytes());
+
+			// Convert byte array into signum representation
+			BigInteger no = new BigInteger(1, messageDigest);
+
+			// Convert message digest into hex value
+			String hashtext = no.toString(16);
+
+			while (hashtext.length() < 32) {
+				hashtext = "0" + hashtext;
+			}
+			
+			student.setPassword(hashtext);
+			
+
+		}
+
+		// For specifying wrong message digest algorithms
+		catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
 		studentDaoImpl.addStudent(student);
 		return "Student Added Sucsessfully!!!!!!!";
 	}
-	
+
 	@PostMapping("/addTeacher")
 	public String addTeacher(@RequestBody Teacher teacher) {
 		teacherDaoImpl.addTeacher(teacher);
 		return "Teacher Added Succsesfully!!!!!!!!";
 	}
-	
+
 	@PostMapping("/addSubject")
 	public String addSubject(@RequestBody Subjects subjects) {
 		subjectsDaoImpl.addSubject(subjects);
 		return "Subject Added Succsesfully!!!!!!";
 	}
-	
+
 	@PostMapping("/addNotice")
 	public String addNotice(@RequestBody Notice_Board notice) {
 		noticeDaoImpl.addNotice(notice);
 		return "Notice Added Succsesfully!!!!!!!";
 	}
-	
+
 	@PostMapping("/addTimeTable")
 	public String addTimeTable(@RequestBody Time_Table timeTable) {
 		timeTableDaoImpl.addTimeTable(timeTable);
