@@ -5,6 +5,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,6 +28,7 @@ import com.project.service.Time_TableDaoImpl;
 
 @RestController
 @RequestMapping("/Admin")
+@CrossOrigin
 public class AdminController {
 
 	@Autowired
@@ -76,6 +78,7 @@ public class AdminController {
 	            
 	            boolean isValidUser = adminDaoImpl.isValidAdmin(isValidAdmin.getEmail(),hashtext);
 	           if(isValidUser) {
+	        	   System.out.println("Login Sucsess!");
 	        	   return true;
 	           }
 	           
