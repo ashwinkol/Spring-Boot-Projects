@@ -32,4 +32,14 @@ public class StudentsDaoImpl {
 		
 	}
 	
+	public boolean findStudentByEmail(String email) {
+		String val =  StudentsDao.findByEmail(email);
+		if(val != null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
 }
