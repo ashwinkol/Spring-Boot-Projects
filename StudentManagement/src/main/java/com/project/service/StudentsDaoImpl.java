@@ -14,44 +14,53 @@ public class StudentsDaoImpl {
 
 	@Autowired
 	public StudentsDao StudentsDao;
-	
+
 	public String addStudent(Students student) {
 		StudentsDao.save(student);
 		return "Student Added Sucsessfully";
 	}
-	
+
 	public List<Students> findAllStudent() {
-		List<Students> s =  StudentsDao.findAll();
+		List<Students> s = StudentsDao.findAll();
 		return s;
 	}
-	
+
 	public Students findStudent(int id) {
 		Optional<Students> student = StudentsDao.findById(id);
 		Students s = student.get();
 		return s;
-		
+
 	}
-	
+
 	public boolean findStudentByEmail(String email) {
-		String val =  StudentsDao.findByEmail(email);
-		if(val != null) {
+		String val = StudentsDao.findByEmail(email);
+		if (val != null) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}
-	
-	public boolean isValidUser(String email,String Password) {
+
+	public boolean isValidUser(String email, String Password) {
 		String isValidUser = StudentsDao.isValidUser(email, Password);
-		if(isValidUser != null) {
+		if (isValidUser != null) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
-		
-		
+
 	}
-	
+
+	public String removeStudent(int id) {
+		try {
+		StudentsDao.deleteById(id);
+		}
+		catch (Exception e) {
+			return e.getMessage();
+		}
+		
+		return "Student Deleted!!!!";
+
+	}
+
 }

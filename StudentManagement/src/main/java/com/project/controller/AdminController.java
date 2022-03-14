@@ -48,52 +48,50 @@ public class AdminController {
 
 	@Autowired
 	private Time_TableDaoImpl timeTableDaoImpl;
-	
+
 	@Autowired
 	private AdminDaoImpl adminDaoImpl;
-	
+
 	@PostMapping("/Login")
 	public boolean isValidAdmin(@RequestBody Admin isValidAdmin) {
-		boolean isValidEmail= adminDaoImpl.isValidEmail(isValidAdmin.getEmail());
-		if(isValidEmail) {
+		boolean isValidEmail = adminDaoImpl.isValidEmail(isValidAdmin.getEmail());
+		if (isValidEmail) {
 			try {
 				String inputPassword = isValidAdmin.getPassword();
-				  
-	            // Static getInstance method is called with hashing MD5
-	            MessageDigest md = MessageDigest.getInstance("MD5");
-	  
-	            // digest() method is called to calculate message digest
-	            //  of an input digest() return array of byte
-	            byte[] messageDigest = md.digest(inputPassword.getBytes());
-	  
-	            // Convert byte array into signum representation
-	            BigInteger no = new BigInteger(1, messageDigest);
-	  
-	            // Convert message digest into hex value
-	            String hashtext = no.toString(16);
-	            
-	            while (hashtext.length() < 32) {
-	                hashtext = "0" + hashtext;
-	            }
-	            
-	            boolean isValidUser = adminDaoImpl.isValidAdmin(isValidAdmin.getEmail(),hashtext);
-	           if(isValidUser) {
-	        	   System.out.println("Login Sucsess!");
-	        	   return true;
-	           }
-	           
-	        } 
-	  
-	        // For specifying wrong message digest algorithms
-	        catch (NoSuchAlgorithmException e) {
-	            throw new RuntimeException(e);
-	        }
-			
+
+				// Static getInstance method is called with hashing MD5
+				MessageDigest md = MessageDigest.getInstance("MD5");
+
+				// digest() method is called to calculate message digest
+				// of an input digest() return array of byte
+				byte[] messageDigest = md.digest(inputPassword.getBytes());
+
+				// Convert byte array into signum representation
+				BigInteger no = new BigInteger(1, messageDigest);
+
+				// Convert message digest into hex value
+				String hashtext = no.toString(16);
+
+				while (hashtext.length() < 32) {
+					hashtext = "0" + hashtext;
+				}
+
+				boolean isValidUser = adminDaoImpl.isValidAdmin(isValidAdmin.getEmail(), hashtext);
+				if (isValidUser) {
+					return true;
+				}
+
+			}
+
+			// For specifying wrong message digest algorithms
+			catch (NoSuchAlgorithmException e) {
+				throw new RuntimeException(e);
+			}
+
 		}
-		
+
 		return false;
 	}
-
 
 	@PostMapping("/addCourse")
 	public String addCourse(@RequestBody Course course) {
@@ -105,7 +103,7 @@ public class AdminController {
 	@PostMapping("/addStudent")
 	public String addStudent(@RequestBody Students student) {
 		String inputPassword = null;
-				
+
 		try {
 			inputPassword = student.getPassword();
 
@@ -125,9 +123,8 @@ public class AdminController {
 			while (hashtext.length() < 32) {
 				hashtext = "0" + hashtext;
 			}
-			
+
 			student.setPassword(hashtext);
-			
 
 		}
 
@@ -138,11 +135,52 @@ public class AdminController {
 		studentDaoImpl.addStudent(student);
 		return "Student Added Sucsessfully!!!!!!!";
 	}
+	
+	
+	@PostMapping("/deleteStudent")
+	public String removeTeacher(@RequestBody Students id) {
+		return studentDaoImpl.removeStudent(id.getRoll_No());
+	}
 
 	@PostMapping("/addTeacher")
 	public String addTeacher(@RequestBody Teacher teacher) {
+		String inputPassword = null;
+
+		try {
+			inputPassword = teacher.getPassword();
+
+			// Static getInstance method is called with hashing MD5
+			MessageDigest md = MessageDigest.getInstance("MD5");
+
+			// digest() method is called to calculate message digest
+			// of an input digest() return array of byte
+			byte[] messageDigest = md.digest(inputPassword.getBytes());
+
+			// Convert byte array into signum representation
+			BigInteger no = new BigInteger(1, messageDigest);
+
+			// Convert message digest into hex value
+			String hashtext = no.toString(16);
+
+			while (hashtext.length() < 32) {
+				hashtext = "0" + hashtext;
+			}
+
+			teacher.setPassword(hashtext);
+
+		}
+
+		// For specifying wrong message digest algorithms
+		catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		}
 		teacherDaoImpl.addTeacher(teacher);
-		return "Teacher Added Succsesfully!!!!!!!!";
+		return "Teacher Added Sucsessfully!!!!!!!";
+	}
+	
+	@PostMapping("/deleteTeacher")
+	public String removeTeacher(@RequestBody Teacher id) {
+		return teacherDaoImpl.removeTeacher(id.getTeacherId());
 	}
 
 	@PostMapping("/addSubject")

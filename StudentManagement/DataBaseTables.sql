@@ -12,6 +12,8 @@ drop table if exists Exam_Performance;
 drop table if exists Admin;
 
 
+CREATE DATABASE StudentManagement;
+USE StudentManagement;
 
 
 
@@ -40,3 +42,7 @@ alter table Exam_Performance add constraint Subject_Id FOREIGN KEY ( Subject_Id 
 
 
 create table Admin(AdminId int(2) not null auto_increment,Name varchar(50),Email varchar(50),Password varchar(120),primary key(AdminId));
+
+
+
+ThisIsMyPassword
