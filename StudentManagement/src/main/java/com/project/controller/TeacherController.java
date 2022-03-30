@@ -26,47 +26,47 @@ public class TeacherController {
 
 	@Autowired
 	private AttendanceDaoImpl studentAttendanceDaoImpl;
-	
+
 	@Autowired
 	private TeacherDaoImpl teacerDaoImpl;
-	
+
 	@PostMapping("/Login")
 	public boolean TeacherLogin(@RequestBody Teacher isValidTeacher) {
-		boolean isValidEmail= teacerDaoImpl.isValidEmail(isValidTeacher.getEmail());
-		if(isValidEmail) {
+		boolean isValidEmail = teacerDaoImpl.isValidEmail(isValidTeacher.getEmail());
+		if (isValidEmail) {
 			try {
 				String inputPassword = isValidTeacher.getPassword();
-				  
-	            // Static getInstance method is called with hashing MD5
-	            MessageDigest md = MessageDigest.getInstance("MD5");
-	  
-	            // digest() method is called to calculate message digest
-	            //  of an input digest() return array of byte
-	            byte[] messageDigest = md.digest(inputPassword.getBytes());
-	  
-	            // Convert byte array into signum representation
-	            BigInteger no = new BigInteger(1, messageDigest);
-	  
-	            // Convert message digest into hex value
-	            String hashtext = no.toString(16);
-	            
-	            while (hashtext.length() < 32) {
-	                hashtext = "0" + hashtext;
-	            }
-	            boolean isValidUser = teacerDaoImpl.isValidTeacher(isValidTeacher.getEmail(),hashtext);
-	           if(isValidUser) {
-	        	   return true;
-	           }
-	           
-	        } 
-	  
-	        // For specifying wrong message digest algorithms
-	        catch (NoSuchAlgorithmException e) {
-	            throw new RuntimeException(e);
-	        }
-			
+
+				// Static getInstance method is called with hashing MD5
+				MessageDigest md = MessageDigest.getInstance("MD5");
+
+				// digest() method is called to calculate message digest
+				// of an input digest() return array of byte
+				byte[] messageDigest = md.digest(inputPassword.getBytes());
+
+				// Convert byte array into signum representation
+				BigInteger no = new BigInteger(1, messageDigest);
+
+				// Convert message digest into hex value
+				String hashtext = no.toString(16);
+
+				while (hashtext.length() < 32) {
+					hashtext = "0" + hashtext;
+				}
+				boolean isValidUser = teacerDaoImpl.isValidTeacher(isValidTeacher.getEmail(), hashtext);
+				if (isValidUser) {
+					return true;
+				}
+
+			}
+
+			// For specifying wrong message digest algorithms
+			catch (NoSuchAlgorithmException e) {
+				throw new RuntimeException(e);
+			}
+
 		}
-		
+
 		return false;
 	}
 

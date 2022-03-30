@@ -28,7 +28,7 @@ import com.project.service.Time_TableDaoImpl;
 
 @RestController
 @RequestMapping("/Admin")
-@CrossOrigin
+@CrossOrigin(origins ="http://localhost:3000")
 public class AdminController {
 
 	@Autowired
@@ -54,6 +54,7 @@ public class AdminController {
 
 	@PostMapping("/Login")
 	public boolean isValidAdmin(@RequestBody Admin isValidAdmin) {
+		System.out.println("Email And Password Is: "+isValidAdmin.getEmail()+" Password: "+isValidAdmin.getPassword());
 		boolean isValidEmail = adminDaoImpl.isValidEmail(isValidAdmin.getEmail());
 		if (isValidEmail) {
 			try {
@@ -78,7 +79,9 @@ public class AdminController {
 
 				boolean isValidUser = adminDaoImpl.isValidAdmin(isValidAdmin.getEmail(), hashtext);
 				if (isValidUser) {
+					System.out.println("Login Done!");
 					return true;
+					
 				}
 
 			}
