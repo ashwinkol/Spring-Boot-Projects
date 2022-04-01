@@ -3,9 +3,12 @@ package com.project.controller;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,10 +55,11 @@ public class AdminController {
 	@Autowired
 	private AdminDaoImpl adminDaoImpl;
 
-	@PostMapping("/Login")
-	public boolean isValidAdmin(@RequestBody Admin isValidAdmin) {
-		System.out.println("Email And Password Is: "+isValidAdmin.getEmail()+" Password: "+isValidAdmin.getPassword());
+	@PostMapping(value ="/Login")
+	public boolean isValidAdmin(@ModelAttribute Admin isValidAdmin) {
 		boolean isValidEmail = adminDaoImpl.isValidEmail(isValidAdmin.getEmail());
+		
+		
 		if (isValidEmail) {
 			try {
 				String inputPassword = isValidAdmin.getPassword();
@@ -76,10 +80,9 @@ public class AdminController {
 				while (hashtext.length() < 32) {
 					hashtext = "0" + hashtext;
 				}
-
+				
 				boolean isValidUser = adminDaoImpl.isValidAdmin(isValidAdmin.getEmail(), hashtext);
 				if (isValidUser) {
-					System.out.println("Login Done!");
 					return true;
 					
 				}
@@ -92,16 +95,24 @@ public class AdminController {
 			}
 
 		}
-
 		return false;
+	}
+	
+	@PostMapping("/AdminHome")
+	public String adminHome() {
+		return "Admin Home";
 	}
 
 	@PostMapping("/addCourse")
-	public String addCourse(@RequestBody Course course) {
+	public String addCourse(@ModelAttribute Course course) {
+		System.out.println(course.getName());
+		System.out.println(course.toString());
 		courseDaoImpl.addCourse(course);
-		return "Course Added Sucsessfully!!!!!!!";
+		return "Done";
 
 	}
+	
+	//Remove Course
 
 	@PostMapping("/addStudent")
 	public String addStudent(@RequestBody Students student) {
@@ -202,5 +213,15 @@ public class AdminController {
 	public String addTimeTable(@RequestBody Time_Table timeTable) {
 		timeTableDaoImpl.addTimeTable(timeTable);
 		return "Student Added Succsesfull!!!!!!!!!";
+	}
+	
+	@GetMapping("/showNoticeBoard")
+	public List<Notice_Board> showNoticeBoard() {
+		return noticeDaoImpl.getNoticeBoard();
+	}
+	
+	@GetMapping("/showTimeTable")
+	public List<Time_Table> showTimeTable() {
+		return timeTableDaoImpl.getTimeTable();
 	}
 }

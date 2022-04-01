@@ -1,5 +1,7 @@
 package com.project.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,5 +19,10 @@ public class Notice_BoardDaoImpl {
 		NoticeDao.save(notice);
 
 		return "Notice Added";
+	}
+	
+	public List<Notice_Board> getNoticeBoard() {
+		List<Notice_Board> NoticeBoardData = NoticeDao.findAll();
+		return NoticeBoardData;
 	}
 }

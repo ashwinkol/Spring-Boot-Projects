@@ -7,7 +7,7 @@ import com.project.entity.Admin;
 
 public interface AdminDao extends JpaRepository<Admin, Integer > {
 	
-	@Query("select Email from Admin where email = ?1 ")
+	@Query("select Email from Admin where Email = ?1 ")
 	public String isValidEmail(String email);
 	
 	@Query("select Email,Password from Admin where email = ?1 and password = ?2")

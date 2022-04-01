@@ -1,5 +1,7 @@
 package com.project.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,4 +17,10 @@ public class Time_TableDaoImpl {
 	public void addTimeTable(Time_Table timeTable) {
 		timeTableDao.save(timeTable);
 	}
+	
+	public List<Time_Table> getTimeTable() {
+		return timeTableDao.findAll();
+	}
+	
+	
 }
