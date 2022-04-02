@@ -4,20 +4,31 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Optional;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.entity.Course;
+import com.project.entity.Attendance;
+import com.project.entity.Notice_Board;
 import com.project.entity.Students;
+import com.project.entity.Time_Table;
+import com.project.pojo.Student;
 import com.project.pojo.User;
+import com.project.pojo.UserId;
+import com.project.service.AttendanceDaoImpl;
 import com.project.service.CourseDaoImpl;
+import com.project.service.Notice_BoardDaoImpl;
 import com.project.service.StudentsDaoImpl;
+import com.project.service.Time_TableDaoImpl;
 
 @RestController
 @RequestMapping("/Student")
@@ -33,11 +44,23 @@ public class StudentController {
 
 	@Autowired
 	private StudentsDaoImpl studentDaoImpl;
+	
+	@Autowired
+	private Notice_BoardDaoImpl noticeBoard;
+	
+	@Autowired
+	private Time_TableDaoImpl timeTable;
+	
+	@Autowired
+	private AttendanceDaoImpl studentAttendance;
 
+	
 	@PostMapping("/Login")
-	public boolean StudentLogin(@RequestBody Students studentDetails) {
+	public boolean StudentLogin(@ModelAttribute Students studentDetails,HttpSession session) {
 
 		boolean validUserEmail = studentDaoImpl.findStudentByEmail(studentDetails.getEmail());
+		 System.out.println("Email: "+studentDetails.getEmail());
+		 System.out.println("Password: "+studentDetails.getPassword());
 
 		if (validUserEmail) {
 			try {
@@ -62,6 +85,16 @@ public class StudentController {
 
 				boolean isValidUser = studentDaoImpl.isValidUser(studentDetails.getEmail(), hashtext);
 				if (isValidUser) {
+					 System.out.println("Valid Student");
+					Student student = new Student();
+					User user = new User();
+					user.setEmail(studentDetails.getEmail());
+					
+					int rollNo = studentDaoImpl.getStudentByEmail(user);
+					student.setEmail(user.getEmail());
+					student.setRoll_No(rollNo);
+					session.setAttribute("email", user.getEmail());
+					session.setAttribute("rollNo", student.getRoll_No());
 					return true;
 				}
 
@@ -80,18 +113,7 @@ public class StudentController {
 
 	}
 
-	@PostMapping("/addStudent")
-	public String addStudent(@RequestBody Students student) {
-		System.out.println(student.getEmail());
-		studentDao.addStudent(student);
-		return "Student Added";
-	}
-
-	@PostMapping("/addCourse")
-	public String addCourse(@RequestBody Course course) {
-		courseDao.addCourse(course);
-		return "Course Added";
-	}
+	
 
 	@PostMapping("/findStudents")
 	public List<Students> findAllStudents() {
@@ -100,10 +122,33 @@ public class StudentController {
 	}
 
 	@PostMapping("/findStudent")
-	public Students findStudent() {
-		Students s = (Students) studentDao.findStudent(1);
-		System.out.println(s.toString());
-		return s;
+	public Students findStudent(@ModelAttribute UserId user) {
+		Students student = (Students) studentDao.findStudent(user.getId());
+		
+		return student;
+	}
+	
+	@GetMapping("/showNoticeBoard")
+	public List<Notice_Board> showNoticeBoard() {
+		return noticeBoard.getNoticeBoard();
+	}
+	
+	@GetMapping("/showTimeTable")
+	public List<Time_Table> showTimeTable() {
+		return timeTable.getTimeTable();
+	}
+	
+	@GetMapping("/getStudentByEmail")
+	public void showStudent(HttpSession session) {
+		String email = (String) session.getAttribute("email");
+		System.out.println(email);
+	}
+	
+	@GetMapping("/getStudentAttendance")
+	public List<Attendance> getAttendance(@RequestBody UserId student) {
+		System.out.println("Stuent Id in Controller "+student.getId());
+		List<Attendance> studentAttendance = studentDaoImpl.getAllAttendance(student.getId());
+		return studentAttendance;
 	}
 
 }

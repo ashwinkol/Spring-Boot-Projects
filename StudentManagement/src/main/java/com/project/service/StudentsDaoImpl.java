@@ -6,7 +6,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.project.entity.Attendance;
 import com.project.entity.Students;
+import com.project.pojo.User;
 import com.project.repository.StudentsDao;
 
 @Service
@@ -14,6 +16,9 @@ public class StudentsDaoImpl {
 
 	@Autowired
 	public StudentsDao StudentsDao;
+	
+	@Autowired
+	private AttendanceDaoImpl AttendanceDao;
 
 	public String addStudent(Students student) {
 		StudentsDao.save(student);
@@ -40,6 +45,12 @@ public class StudentsDaoImpl {
 			return false;
 		}
 	}
+	
+	public int getStudentByEmail(User user) {
+		int stu = StudentsDao.getStudentByEmail(user.getEmail());
+	
+		return stu;
+	}
 
 	public boolean isValidUser(String email, String Password) {
 		String isValidUser = StudentsDao.isValidUser(email, Password);
@@ -61,6 +72,12 @@ public class StudentsDaoImpl {
 		
 		return "Student Deleted!!!!";
 
+	}
+	
+	public List<Attendance> getAllAttendance(int id) {
+		System.out.println("Id in Sudent Dao "+id);
+		List<Attendance> allAttendance = AttendanceDao.getAttendance(id);
+		return allAttendance;
 	}
 
 }

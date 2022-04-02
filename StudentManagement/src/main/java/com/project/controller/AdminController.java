@@ -212,7 +212,7 @@ public class AdminController {
 	@PostMapping("/addTimeTable")
 	public String addTimeTable(@RequestBody Time_Table timeTable) {
 		timeTableDaoImpl.addTimeTable(timeTable);
-		return "Student Added Succsesfull!!!!!!!!!";
+		return "Done";
 	}
 	
 	@GetMapping("/showNoticeBoard")
@@ -223,5 +223,10 @@ public class AdminController {
 	@GetMapping("/showTimeTable")
 	public List<Time_Table> showTimeTable() {
 		return timeTableDaoImpl.getTimeTable();
+	}
+	
+	@GetMapping("/showAllStudents")
+	public List<Students> showAllStudents() {
+		return studentDaoImpl.findAllStudent();
 	}
 }
