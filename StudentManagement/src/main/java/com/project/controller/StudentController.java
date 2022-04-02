@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.entity.Attendance;
+import com.project.entity.Exam_Performance;
 import com.project.entity.Notice_Board;
 import com.project.entity.Students;
 import com.project.entity.Time_Table;
@@ -26,6 +27,7 @@ import com.project.pojo.User;
 import com.project.pojo.UserId;
 import com.project.service.AttendanceDaoImpl;
 import com.project.service.CourseDaoImpl;
+import com.project.service.Exam_PerformanceDaoImpl;
 import com.project.service.Notice_BoardDaoImpl;
 import com.project.service.StudentsDaoImpl;
 import com.project.service.Time_TableDaoImpl;
@@ -52,15 +54,17 @@ public class StudentController {
 	private Time_TableDaoImpl timeTable;
 	
 	@Autowired
-	private AttendanceDaoImpl studentAttendance;
+	private AttendanceDaoImpl attendanceDaoImpl;
 
+	@Autowired
+	private Exam_PerformanceDaoImpl examPerformanceDao;
+	
+	 int StudentRollNo = 0;
 	
 	@PostMapping("/Login")
 	public boolean StudentLogin(@ModelAttribute Students studentDetails,HttpSession session) {
 
 		boolean validUserEmail = studentDaoImpl.findStudentByEmail(studentDetails.getEmail());
-		 System.out.println("Email: "+studentDetails.getEmail());
-		 System.out.println("Password: "+studentDetails.getPassword());
 
 		if (validUserEmail) {
 			try {
@@ -85,14 +89,13 @@ public class StudentController {
 
 				boolean isValidUser = studentDaoImpl.isValidUser(studentDetails.getEmail(), hashtext);
 				if (isValidUser) {
-					 System.out.println("Valid Student");
 					Student student = new Student();
 					User user = new User();
 					user.setEmail(studentDetails.getEmail());
 					
-					int rollNo = studentDaoImpl.getStudentByEmail(user);
+					StudentRollNo = studentDaoImpl.getStudentByEmail(user);
 					student.setEmail(user.getEmail());
-					student.setRoll_No(rollNo);
+					student.setRoll_No(StudentRollNo);
 					session.setAttribute("email", user.getEmail());
 					session.setAttribute("rollNo", student.getRoll_No());
 					return true;
@@ -145,10 +148,15 @@ public class StudentController {
 	}
 	
 	@GetMapping("/getStudentAttendance")
-	public List<Attendance> getAttendance(@RequestBody UserId student) {
-		System.out.println("Stuent Id in Controller "+student.getId());
-		List<Attendance> studentAttendance = studentDaoImpl.getAllAttendance(student.getId());
+	public List<Attendance> getAttendance() {
+		
+		List<Attendance> studentAttendance = attendanceDaoImpl.getAttendanceById(1);
 		return studentAttendance;
+	}
+	 
+	@GetMapping("/getStudentExamData") 
+	public List<Exam_Performance> getExamDetails() {
+		return examPerformanceDao.getExamMarks(1);
 	}
 
 }

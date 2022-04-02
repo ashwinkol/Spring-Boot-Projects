@@ -1,5 +1,7 @@
 package com.project.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,11 @@ public class Exam_PerformanceDaoImpl {
 	
 	public void addMarks(Exam_Performance examMarks) {
 		examPerformance.save(examMarks);
+	}
+	
+	public List<Exam_Performance> getExamMarks(int id){
+		List<Exam_Performance> examMarks = examPerformance.getExamMarks(id);
+		return examMarks;
 	}
 
 }

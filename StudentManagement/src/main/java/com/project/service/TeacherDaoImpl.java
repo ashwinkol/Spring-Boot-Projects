@@ -6,12 +6,16 @@ import org.springframework.stereotype.Service;
 
 import com.project.entity.Teacher;
 import com.project.repository.TeacherDao;
+import com.project.repository.Time_TableDao;
 
 @Service
 public class TeacherDaoImpl {
 
 	@Autowired
 	private TeacherDao teacherDao;
+	
+	@Autowired
+	private Time_TableDao timeTableDaoImpl;
 
 	public void addTeacher(Teacher teacher) {
 		teacherDao.save(teacher);

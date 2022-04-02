@@ -9,7 +9,7 @@ import com.project.entity.Attendance;
 
 public interface AttendanceDao extends JpaRepository<Attendance, Integer> {
 
-	@Query("select Subject,Present_Absent,date from Attendance where Student_Id  = ?1 ")
-	public List<Attendance> findAllById(int id);
-
+	@Query(value = "select * from Attendance where Student_Id = ?1",nativeQuery = true)
+	public List<Attendance> getAttendance(Integer id); 
+ 
 }

@@ -18,8 +18,8 @@ public class AttendanceDaoImpl {
 		studentAttendanceDao.save(studentAttendance);
 	}
 	
-	public List<Attendance> getAttendance(int id){
-		return studentAttendanceDao.findAllById(id);
+	public List<Attendance> getAttendanceById(Integer id){
+		return studentAttendanceDao.getAttendance(id);
 	}
 		
 }

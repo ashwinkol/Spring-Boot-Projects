@@ -25,10 +25,7 @@ public class StudentsDaoImpl {
 		return "Student Added Sucsessfully";
 	}
 
-	public List<Students> findAllStudent() {
-		List<Students> s = StudentsDao.findAll();
-		return s;
-	}
+	
 
 	public Students findStudent(int id) {
 		Optional<Students> student = StudentsDao.findById(id);
@@ -74,9 +71,13 @@ public class StudentsDaoImpl {
 
 	}
 	
-	public List<Attendance> getAllAttendance(int id) {
-		System.out.println("Id in Sudent Dao "+id);
-		List<Attendance> allAttendance = AttendanceDao.getAttendance(id);
+	public List<Students> findAllStudent() {
+		List<Students> s = StudentsDao.findAll();
+		return s;
+	}
+	
+	public List<Attendance> getAllAttendance(Integer id) {
+		List<Attendance> allAttendance = AttendanceDao.getAttendanceById(id);
 		return allAttendance;
 	}
 
