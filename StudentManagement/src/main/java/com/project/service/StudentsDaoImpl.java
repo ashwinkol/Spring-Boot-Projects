@@ -1,6 +1,9 @@
 package com.project.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.entity.Attendance;
 import com.project.entity.Students;
+import com.project.pojo.StudentCourse;
 import com.project.pojo.User;
 import com.project.repository.StudentsDao;
 
@@ -71,13 +75,15 @@ public class StudentsDaoImpl {
 
 	}
 	
-	public List<Students> findAllStudent() {
-		List<Students> s = StudentsDao.findAll();
-		return s;
+	public List<Students> getAllStudents(StudentCourse course) {
+		List<Students> result =  StudentsDao.getStudents("Abcd");
+		
+		return result;
 	}
 	
 	public List<Attendance> getAllAttendance(Integer id) {
 		List<Attendance> allAttendance = AttendanceDao.getAttendanceById(id);
+		
 		return allAttendance;
 	}
 

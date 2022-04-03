@@ -1,5 +1,7 @@
 package com.project.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,4 +17,8 @@ public interface StudentsDao extends JpaRepository<Students, Integer > {
 
 	@Query("select Email,Password from Students where email = ?1 and password = ?2")
 	public String isValidUser(String email,String password);
+	
+	@Query(value = "SELECT * FROM Students WHERE Course = ?1",nativeQuery = true)
+	public List<Students> getStudents(String course); 
+ 
 }

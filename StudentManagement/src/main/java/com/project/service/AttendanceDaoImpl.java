@@ -21,5 +21,9 @@ public class AttendanceDaoImpl {
 	public List<Attendance> getAttendanceById(Integer id){
 		return studentAttendanceDao.getAttendance(id);
 	}
+	
+	public List<Attendance> getAttendance() {
+		return studentAttendanceDao.findAll();
+	}
 		
 }

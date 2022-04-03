@@ -20,10 +20,12 @@ import com.project.entity.Notice_Board;
 import com.project.entity.Students;
 import com.project.entity.Teacher;
 import com.project.entity.Time_Table;
+import com.project.pojo.StudentCourse;
 import com.project.pojo.UserId;
 import com.project.service.AttendanceDaoImpl;
 import com.project.service.Exam_PerformanceDaoImpl;
 import com.project.service.Notice_BoardDaoImpl;
+import com.project.service.StudentsDaoImpl;
 import com.project.service.TeacherDaoImpl;
 import com.project.service.Time_TableDaoImpl;
 
@@ -46,6 +48,9 @@ public class TeacherController {
 	
 	@Autowired
 	private Time_TableDaoImpl timeTableDaoImpl;
+	
+	@Autowired
+	private StudentsDaoImpl studentsDaoImpl;
 
 
 	@PostMapping("/Login")
@@ -111,6 +116,9 @@ public class TeacherController {
 		return timeTableDaoImpl.getTimeTable();
 	}
 
-	//@GetMapping("/getAllStudentList")
+	@GetMapping("/getAllStudentList")
+	public List<Students> getAllStudents(@ModelAttribute StudentCourse courseName) {
+		return studentsDaoImpl.getAllStudents(courseName);
+	}
 	
 }
