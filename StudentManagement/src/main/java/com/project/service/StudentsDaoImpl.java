@@ -1,9 +1,6 @@
 package com.project.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +17,7 @@ public class StudentsDaoImpl {
 
 	@Autowired
 	public StudentsDao StudentsDao;
-	
+
 	@Autowired
 	private AttendanceDaoImpl AttendanceDao;
 
@@ -28,8 +25,6 @@ public class StudentsDaoImpl {
 		StudentsDao.save(student);
 		return "Student Added Sucsessfully";
 	}
-
-	
 
 	public Students findStudent(int id) {
 		Optional<Students> student = StudentsDao.findById(id);
@@ -46,10 +41,10 @@ public class StudentsDaoImpl {
 			return false;
 		}
 	}
-	
+
 	public int getStudentByEmail(User user) {
 		int stu = StudentsDao.getStudentByEmail(user.getEmail());
-	
+
 		return stu;
 	}
 
@@ -65,25 +60,29 @@ public class StudentsDaoImpl {
 
 	public String removeStudent(int id) {
 		try {
-		StudentsDao.deleteById(id);
-		}
-		catch (Exception e) {
+			StudentsDao.deleteById(id);
+		} catch (Exception e) {
 			return e.getMessage();
 		}
-		
+
 		return "Student Deleted!!!!";
 
 	}
-	
+
 	public List<Students> getAllStudents(StudentCourse course) {
-		List<Students> result =  StudentsDao.getStudents("Abcd");
-		
+		List<Students> result = StudentsDao.getStudents("Abcd");
+
 		return result;
 	}
-	
+
+	public List<Students> findAllStudent() {
+		List<Students> s = StudentsDao.findAll();
+		return s;
+	}
+
 	public List<Attendance> getAllAttendance(Integer id) {
 		List<Attendance> allAttendance = AttendanceDao.getAttendanceById(id);
-		
+
 		return allAttendance;
 	}
 
