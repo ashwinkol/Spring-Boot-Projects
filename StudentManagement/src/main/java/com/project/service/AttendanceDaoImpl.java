@@ -25,5 +25,9 @@ public class AttendanceDaoImpl {
 	public List<Attendance> getAttendance() {
 		return studentAttendanceDao.findAll();
 	}
+	
+	public List<Attendance> getStudentAttendanceData(int teacherId,int studentId) {
+		return studentAttendanceDao.getStudentRecord(teacherId, studentId);
+	}
 		
 }

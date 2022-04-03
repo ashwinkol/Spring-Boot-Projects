@@ -96,6 +96,7 @@ public class StudentController {
 					StudentRollNo = studentDaoImpl.getStudentByEmail(user);
 					student.setEmail(user.getEmail());
 					student.setRoll_No(StudentRollNo);
+					
 					session.setAttribute("email", user.getEmail());
 					session.setAttribute("rollNo", student.getRoll_No());
 					return true;

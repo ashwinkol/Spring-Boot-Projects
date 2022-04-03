@@ -5,6 +5,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,7 @@ import com.project.entity.Students;
 import com.project.entity.Teacher;
 import com.project.entity.Time_Table;
 import com.project.pojo.StudentCourse;
+import com.project.pojo.TeacherAndStudentData;
 import com.project.pojo.UserId;
 import com.project.service.AttendanceDaoImpl;
 import com.project.service.Exam_PerformanceDaoImpl;
@@ -54,7 +57,7 @@ public class TeacherController {
 
 
 	@PostMapping("/Login")
-	public boolean TeacherLogin(@ModelAttribute Teacher isValidTeacher) {
+	public boolean TeacherLogin(@ModelAttribute Teacher isValidTeacher,HttpSession session) {
 		boolean isValidEmail = teacerDaoImpl.isValidEmail(isValidTeacher.getEmail());
 		if (isValidEmail) {
 			try {
@@ -78,6 +81,10 @@ public class TeacherController {
 				}
 				boolean isValidUser = teacerDaoImpl.isValidTeacher(isValidTeacher.getEmail(), hashtext);
 				if (isValidUser) {
+					UserId teacher = new UserId();
+					teacher.setId(0);
+					session.setAttribute("teacherId", teacher);
+					
 					return true;
 				}
 
@@ -119,6 +126,11 @@ public class TeacherController {
 	@GetMapping("/getAllStudentList")
 	public List<Students> getAllStudents(@ModelAttribute StudentCourse courseName) {
 		return studentsDaoImpl.getAllStudents(courseName);
+	}
+	//get teacher Id by Session 
+	@GetMapping("/getStudentData")
+	public List<Attendance> getData(@ModelAttribute TeacherAndStudentData data){
+		return studentAttendanceDaoImpl.getStudentAttendanceData(1,data.getStudentId());
 	}
 	
 }

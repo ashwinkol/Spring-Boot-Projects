@@ -16,10 +16,9 @@ public interface TeacherDao extends JpaRepository<Teacher, Integer> {
 	@Query("select Email,Password from Teacher where email = ?1 and password = ?2")
 	public String isValidTeacher(String email,String password);
 	
-
-	
 	@Query("delete from Teacher where TeacherId = ?1")
 	public String removeTeacher(int id);
+	
 	
 
 	

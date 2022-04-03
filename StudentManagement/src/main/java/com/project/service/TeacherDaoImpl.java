@@ -1,9 +1,12 @@
 package com.project.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
+import com.project.entity.Attendance;
 import com.project.entity.Teacher;
 import com.project.repository.TeacherDao;
 import com.project.repository.Time_TableDao;
@@ -16,6 +19,9 @@ public class TeacherDaoImpl {
 	
 	@Autowired
 	private Time_TableDao timeTableDaoImpl;
+	
+	@Autowired
+	private AttendanceDaoImpl attendanceDaoImpl;
 
 	public void addTeacher(Teacher teacher) {
 		teacherDao.save(teacher);
@@ -52,6 +58,7 @@ public class TeacherDaoImpl {
 		}
 		return "Teacher Deleted!!!!";
 	}
+	
 	
 	
 
