@@ -1,12 +1,9 @@
 package com.project.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
-import com.project.entity.Attendance;
 import com.project.entity.Teacher;
 import com.project.repository.TeacherDao;
 import com.project.repository.Time_TableDao;
@@ -46,6 +43,15 @@ public class TeacherDaoImpl {
 			return false;
 		}
 	}
+	
+	public boolean checkIfExist(String email) {
+		String val = teacherDao.isValidEmail(email);
+		if (val != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
 	@Query("SET FOREIGN_KEY_CHECKS=0")
 	public String removeTeacher(int id) {
@@ -57,6 +63,10 @@ public class TeacherDaoImpl {
 			return e.getMessage();
 		}
 		return "Teacher Deleted!!!!";
+	}
+	
+	public int getTeacherId(String email) {
+		return teacherDao.getUserId(email);
 	}
 	
 	

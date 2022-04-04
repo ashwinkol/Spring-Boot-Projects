@@ -48,16 +48,15 @@ public class TeacherController {
 
 	@Autowired
 	private Notice_BoardDaoImpl noticeBoard;
-	
+
 	@Autowired
 	private Time_TableDaoImpl timeTableDaoImpl;
-	
+
 	@Autowired
 	private StudentsDaoImpl studentsDaoImpl;
 
-
 	@PostMapping("/Login")
-	public boolean TeacherLogin(@ModelAttribute Teacher isValidTeacher,HttpSession session) {
+	public boolean TeacherLogin(@ModelAttribute Teacher isValidTeacher, HttpSession session) {
 		boolean isValidEmail = teacerDaoImpl.isValidEmail(isValidTeacher.getEmail());
 		if (isValidEmail) {
 			try {
@@ -81,10 +80,11 @@ public class TeacherController {
 				}
 				boolean isValidUser = teacerDaoImpl.isValidTeacher(isValidTeacher.getEmail(), hashtext);
 				if (isValidUser) {
-					UserId teacher = new UserId();
-					teacher.setId(0);
-					session.setAttribute("teacherId", teacher);
-					
+					int teacherId = teacerDaoImpl.getTeacherId(isValidTeacher.getEmail());
+					System.out.println("Teacher Id : " + teacherId);
+					session.setAttribute("email", isValidTeacher.getEmail());
+					session.setAttribute("teacherId", teacherId);
+
 					return true;
 				}
 
@@ -98,6 +98,11 @@ public class TeacherController {
 		}
 
 		return false;
+	}
+
+	@PostMapping("/LogOut")
+	public void LogOut(HttpSession session) {
+		session.invalidate();
 	}
 
 	@RequestMapping("/addMakrs")
@@ -127,10 +132,15 @@ public class TeacherController {
 	public List<Students> getAllStudents(@ModelAttribute StudentCourse courseName) {
 		return studentsDaoImpl.getAllStudents(courseName);
 	}
-	//get teacher Id by Session 
+
+	// get teacher Id by Session
 	@GetMapping("/getStudentData")
-	public List<Attendance> getData(@ModelAttribute TeacherAndStudentData data){
-		return studentAttendanceDaoImpl.getStudentAttendanceData(1,data.getStudentId());
+	public List<Attendance> getData(@ModelAttribute TeacherAndStudentData data, HttpSession session) {
+
+		String teacherId = (String) session.getAttribute("teacherId");
+		int techId = Integer.valueOf(teacherId);
+		System.out.println("Teacher Id int id" + techId);
+		return studentAttendanceDaoImpl.getStudentAttendanceData(1, data.getStudentId());
 	}
-	
+
 }

@@ -5,6 +5,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,13 +16,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.project.entity.Admin;
 import com.project.entity.Course;
 import com.project.entity.Notice_Board;
 import com.project.entity.Students;
 import com.project.entity.Subjects;
 import com.project.entity.Teacher;
 import com.project.entity.Time_Table;
+import com.project.pojo.User;
 import com.project.service.AdminDaoImpl;
 import com.project.service.CourseDaoImpl;
 import com.project.service.Notice_BoardDaoImpl;
@@ -31,7 +33,7 @@ import com.project.service.Time_TableDaoImpl;
 
 @RestController
 @RequestMapping("/Admin")
-@CrossOrigin(origins ="http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AdminController {
 
 	@Autowired
@@ -55,41 +57,37 @@ public class AdminController {
 	@Autowired
 	private AdminDaoImpl adminDaoImpl;
 
-	@PostMapping(value ="/Login")
-	public boolean isValidAdmin(@ModelAttribute Admin isValidAdmin) {
+	@PostMapping(value = "/Login")
+	public boolean isValidAdmin(@RequestBody User isValidAdmin, HttpSession session) {
 		boolean isValidEmail = adminDaoImpl.isValidEmail(isValidAdmin.getEmail());
-		
-		
+
 		if (isValidEmail) {
 			try {
 				String inputPassword = isValidAdmin.getPassword();
 
-				// Static getInstance method is called with hashing MD5
 				MessageDigest md = MessageDigest.getInstance("MD5");
 
-				// digest() method is called to calculate message digest
-				// of an input digest() return array of byte
+			
 				byte[] messageDigest = md.digest(inputPassword.getBytes());
 
-				// Convert byte array into signum representation
 				BigInteger no = new BigInteger(1, messageDigest);
 
-				// Convert message digest into hex value
 				String hashtext = no.toString(16);
 
 				while (hashtext.length() < 32) {
 					hashtext = "0" + hashtext;
 				}
-				
+
 				boolean isValidUser = adminDaoImpl.isValidAdmin(isValidAdmin.getEmail(), hashtext);
 				if (isValidUser) {
+					session.setAttribute("email", isValidAdmin.getEmail());
+					System.out.println(session.getAttribute("email"));
 					return true;
-					
+
 				}
 
 			}
 
-			// For specifying wrong message digest algorithms
 			catch (NoSuchAlgorithmException e) {
 				throw new RuntimeException(e);
 			}
@@ -97,10 +95,10 @@ public class AdminController {
 		}
 		return false;
 	}
-	
-	@PostMapping("/AdminHome")
-	public String adminHome() {
-		return "Admin Home";
+
+	@PostMapping("/LogOut")
+	public void LogOut(HttpSession session) {
+		session.invalidate();
 	}
 
 	@PostMapping("/addCourse")
@@ -111,46 +109,44 @@ public class AdminController {
 		return "Done";
 
 	}
-	
-	//Remove Course
+
 
 	@PostMapping("/addStudent")
 	public String addStudent(@RequestBody Students student) {
 		String inputPassword = null;
+		boolean checkIfUserExist = studentDaoImpl.findStudentByEmail(student.getEmail());
+		if (!checkIfUserExist) {
+			try {
+				inputPassword = student.getPassword();
 
-		try {
-			inputPassword = student.getPassword();
+				MessageDigest md = MessageDigest.getInstance("MD5");
 
-			// Static getInstance method is called with hashing MD5
-			MessageDigest md = MessageDigest.getInstance("MD5");
+				
+				byte[] messageDigest = md.digest(inputPassword.getBytes());
 
-			// digest() method is called to calculate message digest
-			// of an input digest() return array of byte
-			byte[] messageDigest = md.digest(inputPassword.getBytes());
+				BigInteger no = new BigInteger(1, messageDigest);
 
-			// Convert byte array into signum representation
-			BigInteger no = new BigInteger(1, messageDigest);
+				String hashtext = no.toString(16);
 
-			// Convert message digest into hex value
-			String hashtext = no.toString(16);
+				while (hashtext.length() < 32) {
+					hashtext = "0" + hashtext;
+				}
 
-			while (hashtext.length() < 32) {
-				hashtext = "0" + hashtext;
+				student.setPassword(hashtext);
+
 			}
 
-			student.setPassword(hashtext);
+			catch (NoSuchAlgorithmException e) {
+				throw new RuntimeException(e);
+			}
+			studentDaoImpl.addStudent(student);
+			return "Student Added Sucsessfully!!!!!!!";
+		} else {
 
+			return "Email Id Already Exist";
 		}
-
-		// For specifying wrong message digest algorithms
-		catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException(e);
-		}
-		studentDaoImpl.addStudent(student);
-		return "Student Added Sucsessfully!!!!!!!";
 	}
-	
-	
+
 	@PostMapping("/deleteStudent")
 	public String removeTeacher(@RequestBody Students id) {
 		return studentDaoImpl.removeStudent(id.getRoll_No());
@@ -159,21 +155,17 @@ public class AdminController {
 	@PostMapping("/addTeacher")
 	public String addTeacher(@RequestBody Teacher teacher) {
 		String inputPassword = null;
-
+		boolean checkIfEmailExist = teacherDaoImpl.checkIfExist(teacher.getEmail());
+		if(!checkIfEmailExist) {
 		try {
 			inputPassword = teacher.getPassword();
 
-			// Static getInstance method is called with hashing MD5
 			MessageDigest md = MessageDigest.getInstance("MD5");
 
-			// digest() method is called to calculate message digest
-			// of an input digest() return array of byte
 			byte[] messageDigest = md.digest(inputPassword.getBytes());
 
-			// Convert byte array into signum representation
 			BigInteger no = new BigInteger(1, messageDigest);
 
-			// Convert message digest into hex value
 			String hashtext = no.toString(16);
 
 			while (hashtext.length() < 32) {
@@ -184,14 +176,20 @@ public class AdminController {
 
 		}
 
-		// For specifying wrong message digest algorithms
 		catch (NoSuchAlgorithmException e) {
 			throw new RuntimeException(e);
 		}
 		teacherDaoImpl.addTeacher(teacher);
 		return "Teacher Added Sucsessfully!!!!!!!";
+		
+		}
+		
+		else {
+			return "Email Id Already Exist";
+		}
+		
 	}
-	
+
 	@PostMapping("/deleteTeacher")
 	public String removeTeacher(@RequestBody Teacher id) {
 		return teacherDaoImpl.removeTeacher(id.getTeacherId());
@@ -214,17 +212,20 @@ public class AdminController {
 		timeTableDaoImpl.addTimeTable(timeTable);
 		return "Done";
 	}
-	
+
 	@GetMapping("/showNoticeBoard")
-	public List<Notice_Board> showNoticeBoard() {
+	public List<Notice_Board> showNoticeBoard(HttpSession session) {
+		Object email = session.getAttribute("email");
+		System.out.println("Email: " + email);
+		System.out.println("Session: " + session.getAttribute("email"));
 		return noticeDaoImpl.getNoticeBoard();
 	}
-	
+
 	@GetMapping("/showTimeTable")
 	public List<Time_Table> showTimeTable() {
 		return timeTableDaoImpl.getTimeTable();
 	}
-	
+
 	@GetMapping("/showAllStudents")
 	public List<Students> showAllStudents() {
 		return studentDaoImpl.findAllStudent();
