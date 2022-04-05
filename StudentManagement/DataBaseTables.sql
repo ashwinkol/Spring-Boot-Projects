@@ -1,5 +1,5 @@
-CREATE DATABASE StudentManagement
-USE StudentManagement
+CREATE DATABASE StudentManagement;
+USE StudentManagement;
 
 drop table if exists Students;
 drop table if exists Teacher;
@@ -10,10 +10,6 @@ drop table if exists Attendance;
 drop table if exists Time_Table;
 drop table if exists Exam_Performance;
 drop table if exists Admin;
-
-
-CREATE DATABASE StudentManagement;
-USE StudentManagement;
 
 
 
