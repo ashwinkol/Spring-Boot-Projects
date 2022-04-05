@@ -22,6 +22,7 @@ import com.project.entity.Notice_Board;
 import com.project.entity.Students;
 import com.project.entity.Teacher;
 import com.project.entity.Time_Table;
+import com.project.pojo.Credentials;
 import com.project.pojo.StudentCourse;
 import com.project.pojo.TeacherAndStudentData;
 import com.project.pojo.UserId;
@@ -56,7 +57,7 @@ public class TeacherController {
 	private StudentsDaoImpl studentsDaoImpl;
 
 	@PostMapping("/Login")
-	public boolean TeacherLogin(@ModelAttribute Teacher isValidTeacher, HttpSession session) {
+	public boolean TeacherLogin(@RequestBody Credentials isValidTeacher, HttpSession session) {
 		boolean isValidEmail = teacerDaoImpl.isValidEmail(isValidTeacher.getEmail());
 		if (isValidEmail) {
 			try {

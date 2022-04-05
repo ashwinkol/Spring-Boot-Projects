@@ -8,19 +8,24 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.entity.Attendance;
 import com.project.entity.Exam_Performance;
 import com.project.entity.Notice_Board;
+import com.project.entity.Response;
 import com.project.entity.Students;
 import com.project.entity.Time_Table;
+import com.project.pojo.Credentials;
 import com.project.pojo.User;
 import com.project.pojo.UserId;
 import com.project.service.AttendanceDaoImpl;
@@ -31,8 +36,9 @@ import com.project.service.StudentsDaoImpl;
 import com.project.service.Time_TableDaoImpl;
 
 @RestController
+@CrossOrigin("*")
 @RequestMapping("/Student")
-@CrossOrigin(origins = "http://localhost:3000")
+
 
 public class StudentController {
 
@@ -60,7 +66,7 @@ public class StudentController {
 	int StudentRollNo = 0;
 
 	@PostMapping("/Login")
-	public boolean StudentLogin(@RequestBody User studentDetails, HttpSession session) {
+	public boolean StudentLogin(@RequestBody Credentials studentDetails, HttpSession session) {
 
 		boolean validUserEmail = studentDaoImpl.findStudentByEmail(studentDetails.getEmail());
 
@@ -86,7 +92,6 @@ public class StudentController {
 					u.setEmail(studentDetails.getEmail());
 					session.setAttribute("email", studentDetails.getEmail());
 					int rollNo = studentDao.getStudentByEmail(u);
-					System.out.println("Roll NO Goiing to set " + rollNo);
 					session.setAttribute("RollNo", rollNo);
 					return true;
 				}
@@ -139,18 +144,17 @@ public class StudentController {
 		System.out.println(email);
 	}
 
-	@GetMapping("/getStudentAttendance")
-	public List<Attendance> getAttendance(HttpSession session) {
-		System.out.println("Seesion in Get Attendance " + session.getAttribute("RollNo"));
-		System.out.println("Seesion in Get Attendance " + session.getAttribute("email"));
-
-		List<Attendance> studentAttendance = attendanceDaoImpl.getAttendanceById(1);
-		return studentAttendance;
+	@GetMapping("/getStudentAttendance/{rollNo}")
+	public ResponseEntity<?> getAttendance(@PathVariable int rollNo) {
+		List<Attendance> studentAttendance = attendanceDaoImpl.getAttendanceById(rollNo);
+		return Response.success(studentAttendance);
+		
 	}
 
-	@GetMapping("/getStudentExamData")
-	public List<Exam_Performance> getExamDetails() {
-		return examPerformanceDao.getExamMarks(1);
+	@GetMapping("/getStudentExamData/{rollNo}")
+	public ResponseEntity<?> getExamDetails(@PathVariable int rollNo) {
+		List<Exam_Performance> studentExamData = examPerformanceDao.getExamMarks(rollNo);
+		return Response.success(studentExamData);
 	}
 
 }

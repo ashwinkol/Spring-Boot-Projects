@@ -8,6 +8,8 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.entity.Course;
 import com.project.entity.Notice_Board;
+import com.project.entity.Response;
 import com.project.entity.Students;
 import com.project.entity.Subjects;
 import com.project.entity.Teacher;
@@ -209,11 +212,13 @@ public class AdminController {
 	}
 
 	@GetMapping("/showNoticeBoard")
-	public List<Notice_Board> showNoticeBoard(HttpSession session) {
+	public ResponseEntity<?> showNoticeBoard(HttpSession session) {
 		Object email = session.getAttribute("email");
 		System.out.println("Email: " + email);
 		System.out.println("Session: " + session.getAttribute("email"));
-		return noticeDaoImpl.getNoticeBoard();
+	
+		return Response.success(noticeDaoImpl.getNoticeBoard());
+		
 	}
 
 	@GetMapping("/showTimeTable")
