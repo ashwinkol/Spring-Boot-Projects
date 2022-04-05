@@ -56,6 +56,8 @@ public class AdminController {
 
 	@Autowired
 	private AdminDaoImpl adminDaoImpl;
+	
+	//Hello From Admin Controller
 
 	@PostMapping(value = "/Login")
 	public boolean isValidAdmin(@RequestBody User isValidAdmin, HttpSession session) {
@@ -155,8 +157,6 @@ public class AdminController {
 	@PostMapping("/addTeacher")
 	public String addTeacher(@RequestBody Teacher teacher) {
 		String inputPassword = null;
-		boolean checkIfEmailExist = teacherDaoImpl.checkIfExist(teacher.getEmail());
-		if(!checkIfEmailExist) {
 		try {
 			inputPassword = teacher.getPassword();
 
@@ -182,11 +182,6 @@ public class AdminController {
 		teacherDaoImpl.addTeacher(teacher);
 		return "Teacher Added Sucsessfully!!!!!!!";
 		
-		}
-		
-		else {
-			return "Email Id Already Exist";
-		}
 		
 	}
 
