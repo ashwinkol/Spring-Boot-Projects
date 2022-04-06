@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,12 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.entity.Attendance;
 import com.project.entity.Exam_Performance;
 import com.project.entity.Notice_Board;
+import com.project.entity.Response;
 import com.project.entity.Students;
 import com.project.entity.Teacher;
 import com.project.entity.Time_Table;
 import com.project.pojo.Credentials;
 import com.project.pojo.StudentCourse;
 import com.project.pojo.TeacherAndStudentData;
+import com.project.pojo.User;
 import com.project.pojo.UserId;
 import com.project.service.AttendanceDaoImpl;
 import com.project.service.Exam_PerformanceDaoImpl;
@@ -57,7 +60,7 @@ public class TeacherController {
 	private StudentsDaoImpl studentsDaoImpl;
 
 	@PostMapping("/Login")
-	public boolean TeacherLogin(@RequestBody Credentials isValidTeacher, HttpSession session) {
+	public ResponseEntity<?> TeacherLogin(@RequestBody Credentials isValidTeacher, HttpSession session) {
 		boolean isValidEmail = teacerDaoImpl.isValidEmail(isValidTeacher.getEmail());
 		if (isValidEmail) {
 			try {
@@ -81,12 +84,11 @@ public class TeacherController {
 				}
 				boolean isValidUser = teacerDaoImpl.isValidTeacher(isValidTeacher.getEmail(), hashtext);
 				if (isValidUser) {
-					int teacherId = teacerDaoImpl.getTeacherId(isValidTeacher.getEmail());
-					System.out.println("Teacher Id : " + teacherId);
-					session.setAttribute("email", isValidTeacher.getEmail());
-					session.setAttribute("teacherId", teacherId);
-
-					return true;
+					User userData = new User();
+					userData.setEmail(isValidTeacher.getEmail());
+					int userId = teacerDaoImpl.getUserId(isValidTeacher.getEmail());
+					userData.setUserId(userId);
+					return Response.success(userData);
 				}
 
 			}
@@ -98,7 +100,7 @@ public class TeacherController {
 
 		}
 
-		return false;
+		return Response.error("Invalid Email Or Password");
 	}
 
 	@PostMapping("/LogOut")
