@@ -23,11 +23,10 @@ alter table Subjects add constraint TeacherId FOREIGN KEY ( TeacherId ) referenc
 create table Notice_Board(NoticeId int auto_increment not null,Course_Name int(3), Title varchar(50),Description varchar(50),Notice_Date DATE,primary key(NoticeId));
 alter table Notice_Board add constraint Course_Name FOREIGN KEY ( Course_Name ) references Course(CourseId);
 
-
-create table Attendance(Teacher_Id int(2) not null auto_increment,Student_Id int(3),Course_Id int(3),Subject varchar(50),Present_Absent varchar(10),date DATE,primary key(Teacher_Id));
+create table Attendance(Attendance_Id int(5) not null auto_increment ,Teacher_Id int(2) ,Student_Id int(3),Course_Id int(3),Subject varchar(50),Present_Absent varchar(10),date DATE,primary key(Attendance_Id));
 alter table Attendance add constraint Student_Id FOREIGN KEY ( Student_Id ) references Students(Roll_No);
 alter table Attendance add constraint Course_Id  FOREIGN KEY ( Course_Id  ) references Course(CourseId);
-
+alter table Attendance add constraint Teacher_Id   FOREIGN KEY ( Teacher_Id  ) references Teacher(TeacherId);
 
 create table Time_Table(Day varchar(20),Date DATE,ZoomId varchar(20),zoomPassword varchar(20),Course int(2));
 alter table Time_Table add constraint Course FOREIGN KEY ( Course ) references Course(CourseId);

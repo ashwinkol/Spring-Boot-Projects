@@ -25,6 +25,7 @@ import com.project.entity.Students;
 import com.project.entity.Subjects;
 import com.project.entity.Teacher;
 import com.project.entity.Time_Table;
+import com.project.pojo.Credentials;
 import com.project.pojo.User;
 import com.project.service.AdminDaoImpl;
 import com.project.service.CourseDaoImpl;
@@ -63,7 +64,7 @@ public class AdminController {
 	//Hello From Admin Controller
 
 	@PostMapping(value = "/Login")
-	public boolean isValidAdmin(@RequestBody User isValidAdmin, HttpSession session) {
+	public ResponseEntity<?> isValidAdmin(@RequestBody Credentials isValidAdmin, HttpSession session) {
 		boolean isValidEmail = adminDaoImpl.isValidEmail(isValidAdmin.getEmail());
 
 		if (isValidEmail) {
@@ -85,9 +86,11 @@ public class AdminController {
 
 				boolean isValidUser = adminDaoImpl.isValidAdmin(isValidAdmin.getEmail(), hashtext);
 				if (isValidUser) {
-					session.setAttribute("email", isValidAdmin.getEmail());
-					System.out.println(session.getAttribute("email"));
-					return true;
+					User userData = new User();
+					userData.setEmail(isValidAdmin.getEmail());
+					int userId = adminDaoImpl.getUserId(isValidAdmin.getEmail());
+					userData.setUserId(userId);
+					return Response.success(userData);
 
 				}
 
@@ -98,7 +101,7 @@ public class AdminController {
 			}
 
 		}
-		return false;
+		return Response.error("Invalid Email Or Password");
 	}
 
 	@PostMapping("/LogOut")

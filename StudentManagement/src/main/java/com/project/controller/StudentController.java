@@ -66,7 +66,7 @@ public class StudentController {
 	int StudentRollNo = 0;
 
 	@PostMapping("/Login")
-	public boolean StudentLogin(@RequestBody Credentials studentDetails, HttpSession session) {
+	public ResponseEntity<?> StudentLogin(@RequestBody Credentials studentDetails, HttpSession session) {
 
 		boolean validUserEmail = studentDaoImpl.findStudentByEmail(studentDetails.getEmail());
 
@@ -88,12 +88,14 @@ public class StudentController {
 
 				boolean isValidUser = studentDaoImpl.isValidUser(studentDetails.getEmail(), hashtext);
 				if (isValidUser) {
-					User u = new User();
-					u.setEmail(studentDetails.getEmail());
-					session.setAttribute("email", studentDetails.getEmail());
-					int rollNo = studentDao.getStudentByEmail(u);
-					session.setAttribute("RollNo", rollNo);
-					return true;
+					
+					User userData = new User();
+					userData.setEmail(studentDetails.getEmail());
+					int rollNo = studentDao.getStudentByEmail(userData);
+
+					userData.setUserId(rollNo);
+										
+					return Response.success(userData);
 				}
 
 			}
@@ -103,10 +105,10 @@ public class StudentController {
 			}
 
 		} else {
-			return false;
+			return Response.error("Invalid User Id Or Password!");
 		}
 
-		return false;
+		return  Response.error("Invalid User Id Or Password!");
 
 	}
 

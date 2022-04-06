@@ -34,5 +34,9 @@ public class AdminDaoImpl {
 		}
 	}
 
+	public int getUserId(String email) {
+		int userId = AdminDao.getUserId(email);
+		return userId;
+	}
 	
 }
