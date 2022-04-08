@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.project.entity.Attendance;
+import com.project.entity.Response;
 import com.project.entity.Students;
 import com.project.pojo.StudentCourse;
 import com.project.pojo.User;
@@ -58,15 +60,8 @@ public class StudentsDaoImpl {
 
 	}
 
-	public String removeStudent(int id) {
-		try {
-			StudentsDao.deleteById(id);
-		} catch (Exception e) {
-			return e.getMessage();
-		}
-
-		return "Student Deleted!!!!";
-
+	public ResponseEntity<?> deleteStudentByEmail(String email){
+		return Response.success(StudentsDao.deleteStudentByEmail(email));
 	}
 
 	public List<Students> getAllStudents(StudentCourse course) {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.project.entity.Time_Table;
+import com.project.pojo.TimeTable;
 import com.project.repository.Time_TableDao;
 
 @Service
@@ -19,7 +20,7 @@ public class Time_TableDaoImpl {
 	}
 	
 	public List<Time_Table> getTimeTable() {
-		return timeTableDao.findAll();
+		return timeTableDao.getTimeTable();
 	}
 	
 	

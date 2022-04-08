@@ -17,8 +17,10 @@ public class Notice_Board {
 	@Column
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int NoticeId;
-	@Column
+	
+	@Column 
 	private int Course_Name;
+	
 	@Column
 	private String Title;
 	@Column

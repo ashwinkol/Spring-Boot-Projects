@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.project.entity.Notice_Board;
 @Repository
 public interface Notice_BoardDao extends JpaRepository<Notice_Board, Integer>{
+	
 
 }

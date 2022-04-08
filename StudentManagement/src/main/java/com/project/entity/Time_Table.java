@@ -20,13 +20,15 @@ public class Time_Table {
 	@Column
 	private String ZoomPassword;
 	@Column
-	private int Course;
+	private String Course;
+	
+	
 	
 	public Time_Table() {
 		
 	}
 
-	public Time_Table(String day, java.sql.Date date, String zoomId, String zoomPassword, int course) {
+	public Time_Table(String day, java.sql.Date date, String zoomId, String zoomPassword, String course) {
 		super();
 		Day = day;
 		Date = date;
@@ -67,11 +69,11 @@ public class Time_Table {
 		ZoomPassword = zoomPassword;
 	}
 
-	public int getCourse() {
+	public String getCourse() {
 		return Course;
 	}
 
-	public void setCourse(int course) {
+	public void setCourse(String course) {
 		Course = course;
 	}
 
