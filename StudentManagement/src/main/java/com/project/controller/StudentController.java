@@ -139,18 +139,18 @@ public class StudentController {
 		System.out.println(email);
 	}
 
-	@GetMapping("/getStudentAttendance")
-	public List<Attendance> getAttendance(HttpSession session) {
-		System.out.println("Seesion in Get Attendance " + session.getAttribute("RollNo"));
-		System.out.println("Seesion in Get Attendance " + session.getAttribute("email"));
-
-		List<Attendance> studentAttendance = attendanceDaoImpl.getAttendanceById(1);
-		return studentAttendance;
-	}
 
 	@GetMapping("/getStudentExamData")
 	public List<Exam_Performance> getExamDetails() {
 		return examPerformanceDao.getExamMarks(1);
+	}
+
+	@GetMapping("/getStudentAttendance")
+	public List<Attendance> getAttendance(HttpSession session) {
+		System.out.println("Seesion in Get Attendance " + session.getAttribute("RollNo"));
+		System.out.println("Seesion in Get Attendance " + session.getAttribute("email"));
+		List<Attendance> studentAttendance = attendanceDaoImpl.getAttendanceById(1);
+		return studentAttendance;
 	}
 
 }
