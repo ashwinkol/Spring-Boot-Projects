@@ -26,12 +26,7 @@ import com.project.entity.Time_Table;
 import com.project.pojo.Credentials;
 import com.project.pojo.StudentCourse;
 import com.project.pojo.TeacherAndStudentData;
-<<<<<<< HEAD
-import com.project.pojo.TimeTable;
-=======
 import com.project.pojo.User;
-import com.project.pojo.UserId;
->>>>>>> b06d0a396ba0c2ae9005e463d6a2cc2f1db35593
 import com.project.service.AttendanceDaoImpl;
 import com.project.service.Exam_PerformanceDaoImpl;
 import com.project.service.Notice_BoardDaoImpl;
