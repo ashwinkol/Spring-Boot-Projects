@@ -68,6 +68,11 @@ public class TeacherDaoImpl {
 	public int getTeacherId(String email) {
 		return teacherDao.getUserId(email);
 	}
+
+	public int getUserId(String email) {
+		int userId = teacherDao.getUserId(email);
+		return userId;
+	}
 	
 	
 	
