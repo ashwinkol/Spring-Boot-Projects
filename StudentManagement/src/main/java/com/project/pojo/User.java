@@ -3,6 +3,7 @@ package com.project.pojo;
 public class User {
 
 	private String email;
+	private String password;
 	private int userId;
 
 	public int getUserId() {
@@ -19,6 +20,16 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	@Override

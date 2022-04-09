@@ -80,5 +80,9 @@ public class StudentsDaoImpl {
 
 		return allAttendance;
 	}
+	
+	public String removeStudent(int id) {
+		return "Hi";
+	}
 
 }
