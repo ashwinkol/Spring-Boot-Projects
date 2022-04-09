@@ -198,16 +198,9 @@ public class AdminController {
 		return "Subject Added Succsesfully!!!!!!";
 	}
 
-	@PostMapping("/addNotice")
-	public ResponseEntity<?> addNotice(@RequestBody Notice_Board notice) {
-		noticeDaoImpl.addNotice(notice);
-		return Response.success("Notice Added");
-	}
 	
-	@DeleteMapping("/deleteNotice/{id}")
-	public ResponseEntity<?> deleteNotice(@PathVariable int id){
-		return Response.success(noticeDaoImpl.deleteNotice(id));
-	}
+	
+
 
 	@PostMapping("/addTimeTable")
 	public ResponseEntity<?> addTimeTable(@ModelAttribute Time_Table timeTable) {
@@ -220,6 +213,17 @@ public class AdminController {
 
 		return Response.success(noticeDaoImpl.getNoticeBoard());
 
+	}
+	
+	@PostMapping("/addNotice")
+	public ResponseEntity<?> addNotice(@ModelAttribute Notice_Board notice) {
+		noticeDaoImpl.addNotice(notice);
+		return Response.success("Notice Added");
+	}
+	
+	@DeleteMapping("/deleteNotice/{id}")
+	public ResponseEntity<?> deleteNotice(@PathVariable int id){
+		return Response.success(noticeDaoImpl.deleteNotice(id));
 	}
 
 	@GetMapping("/showTimeTable")
