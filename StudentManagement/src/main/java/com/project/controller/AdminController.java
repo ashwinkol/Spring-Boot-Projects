@@ -219,7 +219,7 @@ public class AdminController {
 	@GetMapping("/showTimeTable")
 	public List<Time_Table> showTimeTable() {
 		return timeTableDaoImpl.getTimeTable();
-	}
+	}  
 
 	@GetMapping("/showAllStudents")
 	public List<Students> showAllStudents() {
