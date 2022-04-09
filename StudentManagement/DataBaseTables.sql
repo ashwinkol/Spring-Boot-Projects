@@ -28,6 +28,10 @@ alter table Attendance add constraint Student_Id FOREIGN KEY ( Student_Id ) refe
 alter table Attendance add constraint Course_Id  FOREIGN KEY ( Course_Id  ) references Course(CourseId);
 alter table Attendance add constraint Teacher_Id   FOREIGN KEY ( Teacher_Id  ) references Teacher(TeacherId);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> ashwin
 create table Time_Table(id int not null auto_increment ,Day varchar(20),Date DATE,ZoomId varchar(20),zoomPassword varchar(20),Course int(2),primary key(id));
 alter table Time_Table add constraint Course FOREIGN KEY ( Course ) references Course(CourseId);
 
