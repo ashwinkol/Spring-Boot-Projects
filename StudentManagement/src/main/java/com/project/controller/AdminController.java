@@ -210,13 +210,23 @@ public class AdminController {
 	public ResponseEntity<?> deleteNotice(@PathVariable int id){
 		return Response.success(noticeDaoImpl.deleteNotice(id));
 	}
-
+  
 	@PostMapping("/addTimeTable")
-	public String addTimeTable(@RequestBody Time_Table timeTable) {
+	public ResponseEntity<?> addTimeTable(@ModelAttribute Time_Table timeTable) {
 		timeTableDaoImpl.addTimeTable(timeTable);
-		return "Done";
+		return Response.success("Time Table Added");
 	}
-
+	 
+	@DeleteMapping("/deleteTimeTable/{id}")
+	public ResponseEntity<?> deleteTimeTable(@PathVariable int id){
+		return Response.success(timeTableDaoImpl.deleteTimeTable(id));
+	}
+	
+	@GetMapping("/showTimeTable")
+	public List<Time_Table> showTimeTable() {
+		return timeTableDaoImpl.getTimeTable();
+	}
+ 
 	@GetMapping("/showNoticeBoard")
 	public ResponseEntity<?> showNoticeBoard() {
 
@@ -224,10 +234,7 @@ public class AdminController {
 
 	}
 
-	@GetMapping("/showTimeTable")
-	public List<Time_Table> showTimeTable() {
-		return timeTableDaoImpl.getTimeTable();
-	}
+	
 
 	@GetMapping("/showAllStudents")
 	public List<Students> showAllStudents() {

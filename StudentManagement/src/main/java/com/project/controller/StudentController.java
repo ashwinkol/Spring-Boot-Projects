@@ -38,8 +38,6 @@ import com.project.service.Time_TableDaoImpl;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/Student")
-
-
 public class StudentController {
 
 	@Autowired

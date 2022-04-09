@@ -12,6 +12,8 @@ public class Time_Table {
 	
 	@Id
 	@Column
+	private int id;
+	@Column
 	private String Day;
 	@Column
 	private Date Date;
@@ -22,20 +24,25 @@ public class Time_Table {
 	@Column
 	private String Course;
 	
-	
+	  
 	
 	public Time_Table() {
 		
 	}
 
-	public Time_Table(String day, java.sql.Date date, String zoomId, String zoomPassword, String course) {
+	
+
+	public Time_Table(int id, String day, java.sql.Date date, String zoomId, String zoomPassword, String course) {
 		super();
+		this.id = id;
 		Day = day;
 		Date = date;
 		ZoomId = zoomId;
 		ZoomPassword = zoomPassword;
 		Course = course;
 	}
+
+
 
 	public String getDay() {
 		return Day;
@@ -77,12 +84,26 @@ public class Time_Table {
 		Course = course;
 	}
 
+
+
 	@Override
 	public String toString() {
-		return "Time_Table [Day=" + Day + ", Date=" + Date + ", ZoomId=" + ZoomId + ", ZoomPassword=" + ZoomPassword
-				+ ", Course=" + Course + "]";
+		return "Time_Table [id=" + id + ", Day=" + Day + ", Date=" + Date + ", ZoomId=" + ZoomId + ", ZoomPassword="
+				+ ZoomPassword + ", Course=" + Course + "]";
 	}
-	
+
+
+
+	public int getId() {
+		return id;
+	}
+
+
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	
 
 }
