@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,7 +57,7 @@ public class TeacherController {
 
 	@Autowired
 	private StudentsDaoImpl studentsDaoImpl;
-
+ 
 	@PostMapping("/Login")
 	public ResponseEntity<?> TeacherLogin(@RequestBody Credentials isValidTeacher, HttpSession session) {
 		boolean isValidEmail = teacerDaoImpl.isValidEmail(isValidTeacher.getEmail());
@@ -88,6 +89,9 @@ public class TeacherController {
 					userData.setUserId(userId);
 					return Response.success(userData);
 				}
+				else {
+					Response.error("Invalid User Name Or Password");
+				}
 
 			}
 
@@ -105,7 +109,7 @@ public class TeacherController {
 	public void LogOut(HttpSession session) {
 		session.invalidate();
 	}
-
+ 
 	@RequestMapping("/addMakrs")
 	public String addMarksToStudent(@RequestBody Exam_Performance examMakrs) {
 		examMarksDaoImpl.addMarks(examMakrs);
@@ -128,20 +132,16 @@ public class TeacherController {
 	public List<Time_Table> showTimeTable() {
 		return timeTableDaoImpl.getTimeTable();
 	}
-
+ 
 	@GetMapping("/getAllStudentList")
 	public List<Students> getAllStudents(@ModelAttribute StudentCourse courseName) {
 		return studentsDaoImpl.getAllStudents(courseName);
 	}
 
 	// get teacher Id by Session
-	@GetMapping("/getStudentData")
-	public List<Attendance> getData(@ModelAttribute TeacherAndStudentData data, HttpSession session) {
-
-		String teacherId = (String) session.getAttribute("teacherId");
-		int techId = Integer.valueOf(teacherId);
-		System.out.println("Teacher Id int id" + techId);
-		return studentAttendanceDaoImpl.getStudentAttendanceData(1, data.getStudentId());
+	@GetMapping("/getStudentData/{studentId}")
+	public ResponseEntity<?> getData(@PathVariable int studentId) {		
+		return Response.success(studentAttendanceDaoImpl.getStudentAttendanceData(11, studentId));
 	}
-
+  
 }
