@@ -8,20 +8,27 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.project.entity.Course;
 import com.project.entity.Notice_Board;
+import com.project.entity.Response;
 import com.project.entity.Students;
 import com.project.entity.Subjects;
 import com.project.entity.Teacher;
 import com.project.entity.Time_Table;
+import com.project.pojo.Credentials;
+import com.project.pojo.TimeTable;
 import com.project.pojo.User;
 import com.project.service.AdminDaoImpl;
 import com.project.service.CourseDaoImpl;
@@ -31,6 +38,7 @@ import com.project.service.SubjectsDaoImpl;
 import com.project.service.TeacherDaoImpl;
 import com.project.service.Time_TableDaoImpl;
 
+//This is comment from kshitijk branch
 @RestController
 @RequestMapping("/Admin")
 @CrossOrigin(origins = "http://localhost:3000")
@@ -56,20 +64,18 @@ public class AdminController {
 
 	@Autowired
 	private AdminDaoImpl adminDaoImpl;
-	
-	//Hello From Admin Controller
+
+	// Hello From Admin Controller
 
 	@PostMapping(value = "/Login")
-	public boolean isValidAdmin(@RequestBody User isValidAdmin, HttpSession session) {
+	public ResponseEntity<?> isValidAdmin(@RequestBody Credentials isValidAdmin, HttpSession session) {
 		boolean isValidEmail = adminDaoImpl.isValidEmail(isValidAdmin.getEmail());
-
 		if (isValidEmail) {
 			try {
 				String inputPassword = isValidAdmin.getPassword();
 
 				MessageDigest md = MessageDigest.getInstance("MD5");
 
-			
 				byte[] messageDigest = md.digest(inputPassword.getBytes());
 
 				BigInteger no = new BigInteger(1, messageDigest);
@@ -82,9 +88,11 @@ public class AdminController {
 
 				boolean isValidUser = adminDaoImpl.isValidAdmin(isValidAdmin.getEmail(), hashtext);
 				if (isValidUser) {
-					session.setAttribute("email", isValidAdmin.getEmail());
-					System.out.println(session.getAttribute("email"));
-					return true;
+					User userData = new User();
+					userData.setEmail(isValidAdmin.getEmail());
+					int userId = adminDaoImpl.getUserId(isValidAdmin.getEmail());
+					userData.setUserId(userId);
+					return Response.success(userData);
 
 				}
 
@@ -95,7 +103,7 @@ public class AdminController {
 			}
 
 		}
-		return false;
+		return Response.error("Invalid Email Or Password");
 	}
 
 	@PostMapping("/LogOut")
@@ -103,18 +111,14 @@ public class AdminController {
 		session.invalidate();
 	}
 
-	@PostMapping("/addCourse")
-	public String addCourse(@ModelAttribute Course course) {
-		System.out.println(course.getName());
-		System.out.println(course.toString());
-		courseDaoImpl.addCourse(course);
-		return "Done";
+	@PostMapping("/addCourse/{Name}")
+	public ResponseEntity<?> addCourse(@ModelAttribute Course Name) {
+		return Response.success(courseDaoImpl.addCourse(Name));
 
 	}
 
-
 	@PostMapping("/addStudent")
-	public String addStudent(@RequestBody Students student) {
+	public ResponseEntity<?> addStudent(@ModelAttribute Students student) {
 		String inputPassword = null;
 		boolean checkIfUserExist = studentDaoImpl.findStudentByEmail(student.getEmail());
 		if (!checkIfUserExist) {
@@ -123,7 +127,6 @@ public class AdminController {
 
 				MessageDigest md = MessageDigest.getInstance("MD5");
 
-				
 				byte[] messageDigest = md.digest(inputPassword.getBytes());
 
 				BigInteger no = new BigInteger(1, messageDigest);
@@ -142,20 +145,22 @@ public class AdminController {
 				throw new RuntimeException(e);
 			}
 			studentDaoImpl.addStudent(student);
-			return "Student Added Sucsessfully!!!!!!!";
+			return Response.success("Done");
+			 
 		} else {
 
-			return "Email Id Already Exist";
+			return Response.error("Invalid User Name Or Password");
 		}
 	}
 
-	@PostMapping("/deleteStudent")
-	public String removeTeacher(@RequestBody Students id) {
-		return studentDaoImpl.removeStudent(id.getRoll_No());
+	@DeleteMapping("/deleteStudent/{email}")
+	public ResponseEntity<?> removeTeacher(@PathVariable String email) {
+		System.out.println("We Got Email: "+email);
+		return Response.success(studentDaoImpl.deleteStudentByEmail(email));
 	}
 
 	@PostMapping("/addTeacher")
-	public String addTeacher(@RequestBody Teacher teacher) {
+	public ResponseEntity<?> addTeacher(@ModelAttribute Teacher teacher) {
 		String inputPassword = null;
 		try {
 			inputPassword = teacher.getPassword();
@@ -180,9 +185,8 @@ public class AdminController {
 			throw new RuntimeException(e);
 		}
 		teacherDaoImpl.addTeacher(teacher);
-		return "Teacher Added Sucsessfully!!!!!!!";
-		
-		
+		return Response.success("Teacher Added");
+
 	}
 
 	@PostMapping("/deleteTeacher")
@@ -197,9 +201,14 @@ public class AdminController {
 	}
 
 	@PostMapping("/addNotice")
-	public String addNotice(@RequestBody Notice_Board notice) {
+	public ResponseEntity<?> addNotice(@RequestBody Notice_Board notice) {
 		noticeDaoImpl.addNotice(notice);
-		return "Notice Added Succsesfully!!!!!!!";
+		return Response.success("Notice Added");
+	}
+	
+	@DeleteMapping("/deleteNotice/{id}")
+	public ResponseEntity<?> deleteNotice(@PathVariable int id){
+		return Response.success(noticeDaoImpl.deleteNotice(id));
 	}
 
 	@PostMapping("/addTimeTable")
@@ -209,17 +218,16 @@ public class AdminController {
 	}
 
 	@GetMapping("/showNoticeBoard")
-	public List<Notice_Board> showNoticeBoard(HttpSession session) {
-		Object email = session.getAttribute("email");
-		System.out.println("Email: " + email);
-		System.out.println("Session: " + session.getAttribute("email"));
-		return noticeDaoImpl.getNoticeBoard();
+	public ResponseEntity<?> showNoticeBoard() {
+
+		return Response.success(noticeDaoImpl.getNoticeBoard());
+
 	}
 
 	@GetMapping("/showTimeTable")
 	public List<Time_Table> showTimeTable() {
 		return timeTableDaoImpl.getTimeTable();
-	}  
+	}
 
 	@GetMapping("/showAllStudents")
 	public List<Students> showAllStudents() {
