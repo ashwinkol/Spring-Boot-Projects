@@ -8,6 +8,7 @@ import java.util.List;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.project.entity.Course;
 import com.project.entity.Notice_Board;
+import com.project.entity.Response;
 import com.project.entity.Students;
 import com.project.entity.Subjects;
 import com.project.entity.Teacher;
@@ -83,7 +85,6 @@ public class AdminController {
 				boolean isValidUser = adminDaoImpl.isValidAdmin(isValidAdmin.getEmail(), hashtext);
 				if (isValidUser) {
 					session.setAttribute("email", isValidAdmin.getEmail());
-					System.out.println(session.getAttribute("email"));
 					return true;
 
 				}
@@ -109,6 +110,12 @@ public class AdminController {
 		System.out.println(course.toString());
 		courseDaoImpl.addCourse(course);
 		return "Done";
+
+	}
+	
+	@PostMapping("/addCourse/{Name}")
+	public ResponseEntity<?> addCourseName(@ModelAttribute Course Name) {
+		return Response.success(courseDaoImpl.addCourse(Name));
 
 	}
 
