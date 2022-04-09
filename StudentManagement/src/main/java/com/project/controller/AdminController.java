@@ -210,9 +210,9 @@ public class AdminController {
 	}
 
 	@PostMapping("/addTimeTable")
-	public String addTimeTable(@RequestBody Time_Table timeTable) {
+	public ResponseEntity<?> addTimeTable(@ModelAttribute Time_Table timeTable) {
 		timeTableDaoImpl.addTimeTable(timeTable);
-		return "Done";
+		return Response.success("Time Table Added");
 	}
 
 	@GetMapping("/showNoticeBoard")
