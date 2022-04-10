@@ -1,5 +1,7 @@
 package com.project.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,4 +17,12 @@ public class CourseDaoImpl {
 	public Course addCourse(Course course) {
 		return CourseDao.save(course);		
 	}
+	
+	public List<Course> getAllCourse() {
+		return CourseDao.findAll();
+	}
+	
+	public void deleteCourse(int id) {
+		 CourseDao.deleteCourse(id);
+	} 
 }

@@ -114,6 +114,13 @@ public class AdminController {
 		return Response.success(courseDaoImpl.addCourse(Name));
 
 	}
+	
+	@DeleteMapping("/deleteCourse/{id}")
+	public ResponseEntity<?> deleteCourse(@PathVariable int id) {
+		System.out.println("Delete Course");
+		courseDaoImpl.deleteCourse(id);
+		return Response.success("Course Deleted");
+	}
 
 	@PostMapping("/addStudent")
 	public ResponseEntity<?> addStudent(@ModelAttribute Students student) {
@@ -187,9 +194,10 @@ public class AdminController {
 
 	}
 
-	@PostMapping("/deleteTeacher/{id}")
+	@DeleteMapping("/deleteTeacher/{id}")
 	public ResponseEntity<?> removeTeacher(@PathVariable int id) {
-		return Response.success(teacherDaoImpl.removeTeacher(id));
+		teacherDaoImpl.removeTeacher(id);
+		return Response.success("Teacher Deleted");
 	}
 	
 	@GetMapping("/showTeachers")
@@ -243,4 +251,12 @@ public class AdminController {
 	public List<Students> showAllStudents() {
 		return studentDaoImpl.findAllStudent();
 	}
+	
+	@GetMapping("/getAllCourses")
+	public ResponseEntity<?> getAllCourses() {
+		return Response.success(courseDaoImpl.getAllCourse());
+
+	}
+	
+	
 }

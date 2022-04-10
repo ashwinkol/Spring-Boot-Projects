@@ -3,7 +3,6 @@ package com.project.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.project.entity.Teacher;
@@ -15,10 +14,10 @@ public class TeacherDaoImpl {
 
 	@Autowired
 	private TeacherDao teacherDao;
-	
+
 	@Autowired
 	private Time_TableDao timeTableDaoImpl;
-	
+
 	@Autowired
 	private AttendanceDaoImpl attendanceDaoImpl;
 
@@ -45,7 +44,7 @@ public class TeacherDaoImpl {
 			return false;
 		}
 	}
-	
+
 	public boolean checkIfExist(String email) {
 		String val = teacherDao.isValidEmail(email);
 		if (val != null) {
@@ -55,18 +54,10 @@ public class TeacherDaoImpl {
 		}
 	}
 
-	@Query("SET FOREIGN_KEY_CHECKS=0")
-	public String removeTeacher(int id) {
-
-		try {
-			teacherDao.deleteById(id);
-
-		} catch (Exception e) {
-			return e.getMessage();
-		}
-		return "Teacher Deleted!!!!";
+	public void removeTeacher(int id) {
+		teacherDao.removeTeacher(id);
 	}
-	
+
 	public int getTeacherId(String email) {
 		return teacherDao.getUserId(email);
 	}
@@ -76,11 +67,9 @@ public class TeacherDaoImpl {
 		return userId;
 	}
 	
+
 	public List<Teacher> getAllTeachers() {
 		return teacherDao.findAll();
 	}
-	
-	
-	
 
 }
