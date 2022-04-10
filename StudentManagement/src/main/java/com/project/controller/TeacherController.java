@@ -139,9 +139,11 @@ public class TeacherController {
 	}
 
 	// get teacher Id by Session
-	@GetMapping("/getStudentData/{studentId}")
-	public ResponseEntity<?> getData(@PathVariable int studentId) {		
-		return Response.success(studentAttendanceDaoImpl.getStudentAttendanceData(11, studentId));
+	@GetMapping("/getStudentData/{studentId}/{teacherId}")
+	public ResponseEntity<?> getData(@PathVariable int studentId, @PathVariable int teacherId) {	
+		System.out.println("Teacher Id: "+teacherId);
+		System.out.println("Student Id: "+studentId);
+		return Response.success(studentAttendanceDaoImpl.getStudentAttendanceData(teacherId, studentId));
 	}
   
 }

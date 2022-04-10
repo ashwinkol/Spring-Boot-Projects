@@ -187,9 +187,14 @@ public class AdminController {
 
 	}
 
-	@PostMapping("/deleteTeacher")
-	public String removeTeacher(@RequestBody Teacher id) {
-		return teacherDaoImpl.removeTeacher(id.getTeacherId());
+	@PostMapping("/deleteTeacher/{id}")
+	public ResponseEntity<?> removeTeacher(@PathVariable int id) {
+		return Response.success(teacherDaoImpl.removeTeacher(id));
+	}
+	
+	@GetMapping("/showTeachers")
+	public ResponseEntity<?> getAllTeacher(){
+		return Response.success(teacherDaoImpl.getAllTeachers());
 	}
 
 	@PostMapping("/addSubject")
@@ -198,14 +203,17 @@ public class AdminController {
 		return "Subject Added Succsesfully!!!!!!";
 	}
 
-	
-	
-
 
 	@PostMapping("/addTimeTable")
 	public ResponseEntity<?> addTimeTable(@ModelAttribute Time_Table timeTable) {
 		timeTableDaoImpl.addTimeTable(timeTable);
 		return Response.success("Time Table Added");
+	}
+	
+	@DeleteMapping("/deleteTimeTable/{id}")
+	public ResponseEntity<?> deleteTimeTable(@PathVariable int id){
+		timeTableDaoImpl.deleteTimeTable(id);
+		return Response.success("Time Table Deleted");
 	}
 
 	@GetMapping("/showNoticeBoard")

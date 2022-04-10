@@ -1,5 +1,7 @@
 package com.project.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
@@ -72,6 +74,10 @@ public class TeacherDaoImpl {
 	public int getUserId(String email) {
 		int userId = teacherDao.getUserId(email);
 		return userId;
+	}
+	
+	public List<Teacher> getAllTeachers() {
+		return teacherDao.findAll();
 	}
 	
 	

@@ -17,7 +17,7 @@ public interface StudentsDao extends JpaRepository<Students, Integer > {
 	
 	@Query("select Email from Students where email = ?1 ")
 	public String findByEmail(String email);
-	
+	  
 	@Modifying
 	@Query("delete from Students where Email =  ?1")
 	public int deleteStudentByEmail(String email);

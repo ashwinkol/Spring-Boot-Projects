@@ -1,5 +1,7 @@
 package com.project.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -25,7 +27,8 @@ public interface TeacherDao extends JpaRepository<Teacher, Integer> {
 	@Query("delete from Teacher where TeacherId = ?1")
 	public String removeTeacher(int id);
 	
-	
+	@Query("select TeacherId,First_Name,Last_Name,Subject from Teacher")
+	public List<Teacher> getTeachers();
 
 	
 }
